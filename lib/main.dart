@@ -1,10 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import 'package:submission_5_story_app/screens/home_screen.dart';
 import 'package:submission_5_story_app/screens/login_screen.dart';
+import 'package:submission_5_story_app/screens/posting_screen.dart';
 import 'package:submission_5_story_app/screens/register_screen.dart';
+import 'package:submission_5_story_app/providers/file_provider.dart';
 
 final GoRouter _router = GoRouter(
+  redirect: (context, state) {
+    // final hasLoggedin = false;
+
+    // if (hasLoggedin) {
+    //   return '/login';
+    // } else {
+    //   return null;
+    // }
+
+  },
   routes: <RouteBase>[
     GoRoute(
       path: '/login',
@@ -18,12 +31,23 @@ final GoRouter _router = GoRouter(
       path: '/',
       builder: (context, state) => const HomeScreen(title: 'Title'),
     ),
+    GoRoute(
+      path: '/posting',
+      builder: (context, state) => const PostingScreen(),
+    ),
   ],
 );
 
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => FileProvider())
+      ],
+      child: const MyApp()
+    )
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -39,6 +63,9 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       routerConfig: _router,
+      // routeInformationParser: _router.routeInformationParser,
+      // routeInformationProvider: _router.routeInformationProvider,
+      // routerDelegate: _router.routerDelegate,
     );
   }
 }
