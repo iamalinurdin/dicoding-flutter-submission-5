@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:submission_5_story_app/data/storages/user_storage.dart';
+import 'package:submission_5_story_app/providers/auth_provider.dart';
 import 'package:submission_5_story_app/screens/home_screen.dart';
 import 'package:submission_5_story_app/screens/login_screen.dart';
 import 'package:submission_5_story_app/screens/posting_screen.dart';
@@ -8,15 +10,9 @@ import 'package:submission_5_story_app/screens/register_screen.dart';
 import 'package:submission_5_story_app/providers/file_provider.dart';
 
 final GoRouter _router = GoRouter(
+  initialLocation: '/login',
   redirect: (context, state) {
-    // final hasLoggedin = false;
-
-    // if (hasLoggedin) {
-    //   return '/login';
-    // } else {
-    //   return null;
-    // }
-
+    return '/';
   },
   routes: <RouteBase>[
     GoRoute(
@@ -38,12 +34,18 @@ final GoRouter _router = GoRouter(
   ],
 );
 
-
 void main() {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => FileProvider())
+        ChangeNotifierProvider(
+          create: (_) => FileProvider()
+        ),
+        ChangeNotifierProvider(
+          create: (_) => AuthProvider(
+            userStorage: UserStorage()
+          )
+        )
       ],
       child: const MyApp()
     )

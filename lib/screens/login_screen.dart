@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:submission_5_story_app/config/state.dart';
+import 'package:submission_5_story_app/providers/auth_provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -67,19 +70,32 @@ class _LoginScreenState extends State<LoginScreen> {
                 controller: _password,
               ),
               const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: () {
-                  context.go('/home');
-                }, 
-                style: ElevatedButton.styleFrom(
-                  minimumSize: const Size.fromHeight(50),
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(20)
-                    )
-                  )
-                ),
-                child: const Text('Login'),
+              Consumer<AuthProvider>(
+                builder: (context, provider, child) {
+                  return ElevatedButton(
+                    onPressed: () async {
+                      await provider.login({
+                        'email': _username.text,
+                        'password': _password.text
+                      });
+
+                      if (provider.state == ProviderState.success && context.mounted) {
+                        context.go('/');
+                      }
+                    }, 
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size.fromHeight(50),
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20)
+                        )
+                      )
+                    ),
+                    child: provider.state == ProviderState.loading 
+                      ? const CircularProgressIndicator() 
+                      : const Text('Login'),
+                  );
+                },
               ),
               const SizedBox(height: 10),
               TextButton(
