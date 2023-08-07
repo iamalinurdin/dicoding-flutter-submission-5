@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:submission_5_story_app/data/models/story.dart';
 
 class StoryCard extends StatelessWidget {
-  const StoryCard({super.key});
+  final Story story;
+
+  // const StoryCard({super.key});
+
+  const StoryCard({required this.story, super.key});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Image.asset('assets/image.jpg'),
+        Image.network(story.photoUrl),
         Wrap(
           children: [
             Expanded(
@@ -35,14 +40,14 @@ class StoryCard extends StatelessWidget {
             )
           ],
         ),
-        const Text(
-          'username',
-          style: TextStyle(
+        Text(
+          story.name,
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 14
           ),
         ),
-        const Text('Long caption writted here. you can write very long caption.')
+        Text(story.description)
       ],
     );
 

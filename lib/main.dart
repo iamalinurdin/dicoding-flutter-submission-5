@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:submission_5_story_app/data/storages/user_storage.dart';
 import 'package:submission_5_story_app/providers/auth_provider.dart';
+import 'package:submission_5_story_app/providers/story_provider.dart';
 import 'package:submission_5_story_app/screens/home_screen.dart';
 import 'package:submission_5_story_app/screens/login_screen.dart';
 import 'package:submission_5_story_app/screens/posting_screen.dart';
@@ -45,6 +46,9 @@ void main() {
           create: (_) => AuthProvider(
             userStorage: UserStorage()
           )
+        ),
+        ChangeNotifierProvider(
+          create: (_) => StoryProvider()
         )
       ],
       child: const MyApp()
