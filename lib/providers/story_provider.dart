@@ -23,9 +23,7 @@ class StoryProvider with ChangeNotifier {
       notifyListeners();
       
       final response = await _apiService.fetchStory();
-      
 
-      print('total: ${response.results[0].name}');
       if (response.results.isEmpty) {
         _state = ProviderState.none;
         notifyListeners();
@@ -42,6 +40,37 @@ class StoryProvider with ChangeNotifier {
       notifyListeners();
 
       return _message = 'failed to fetch story';
+    }
+  }
+
+  Future<dynamic> uploadStory(List<int> bytes, String filename, String description) async {
+    try {
+      _state = ProviderState.loading;
+      notifyListeners();
+
+      final response = await _apiService.addStory(bytes, filename, description);
+
+      print('response: ${response.error}');
+      print('response: ${response.message}');
+
+      if (response.error) {
+        _state = ProviderState.failed;
+        notifyListeners();
+
+        return _message = 'failed to upload story';
+      } else {
+        _state = ProviderState.success;
+        notifyListeners();
+
+        return _message = response.message;
+      }
+
+
+    } catch (e) {
+      _state = ProviderState.failed;
+      notifyListeners();
+
+      return _message = 'failed to upload story';
     }
   }
 }

@@ -18,12 +18,16 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Consumer<StoryProvider>(
       builder: (context, provider, child) {
-        print(provider.state);
-        print(provider.result.length);
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Theme.of(context).colorScheme.inversePrimary,
             title: Text(widget.title),
+            actions: [
+              IconButton(
+                onPressed: () => context.push('/posting'), 
+                icon: const Icon(Icons.add_a_photo)
+              )
+            ],
           ),
           body: Padding(
             padding: const EdgeInsets.all(16),

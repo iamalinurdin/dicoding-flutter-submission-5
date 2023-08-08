@@ -1,7 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:submission_5_story_app/data/models/story_result.dart';
+import 'package:submission_5_story_app/data/models/upload_response.dart';
 import 'package:submission_5_story_app/data/storages/user_storage.dart';
 import 'package:http/http.dart' as http;
 
@@ -52,19 +54,42 @@ class APIService {
     }
   }
 
-  Future<dynamic> addStory(dynamic payload) async {
+  Future<dynamic> addStory(List<int> bytes, String filename, String description) async {
     final userStorage = UserStorage();
     final token = await userStorage.token;
-    final response = await http.post(
-      Uri.parse('$baseURL/stories'), 
-      headers: {
-        'Content-Type': 'application/json',
-        HttpHeaders.authorizationHeader: 'Bearer $token'
-      },
-      body: json.encode(payload), 
-    );
 
-    print('response: ${response}');
+    var request = http.MultipartRequest('POST', Uri.parse('$baseURL/stories'));
+    var multipartFile = http.MultipartFile.fromBytes('photo', bytes, filename: filename);
+    var headers = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token'
+    };
+    var fields = {
+      'description': description
+    };
+
+    request.files.add(multipartFile);
+    request.fields.addAll(fields);
+    request.headers.addAll(headers);
+
+
+    final http.StreamedResponse streamedResponse = await request.send();
+    final int statusCode = streamedResponse.statusCode;
+
+    final Uint8List responseList = await streamedResponse.stream.toBytes();
+    final String responseData = String.fromCharCodes(responseList);
+
+    // print('statusCode: $statusCode');
+    // print('responseData: $responseData');
+
+
+    if (statusCode == 201) {
+      return UploadResponse.fromJson(json.decode(responseData));
+    } else {
+      throw Exception('failed to upload story');
+    }
+
+    // print('response: ${response}');
   }
 
   Future<dynamic> fetchStory() async {

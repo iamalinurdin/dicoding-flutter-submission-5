@@ -11,10 +11,10 @@ import 'package:submission_5_story_app/screens/register_screen.dart';
 import 'package:submission_5_story_app/providers/file_provider.dart';
 
 final GoRouter _router = GoRouter(
-  initialLocation: '/login',
-  redirect: (context, state) {
-    return '/';
-  },
+  initialLocation: '/',
+  // redirect: (context, state) {
+  //   return '/';
+  // },
   routes: <RouteBase>[
     GoRoute(
       path: '/login',
