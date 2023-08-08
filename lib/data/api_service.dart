@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:submission_5_story_app/data/models/story.dart';
 import 'package:submission_5_story_app/data/models/story_result.dart';
 import 'package:submission_5_story_app/data/models/upload_response.dart';
 import 'package:submission_5_story_app/data/storages/user_storage.dart';
@@ -48,6 +49,7 @@ class APIService {
     );
 
     if (response.statusCode == 201) {
+      
       return json.decode(response.body);
     } else {
       throw Exception('failed to fetch login');
@@ -79,17 +81,11 @@ class APIService {
     final Uint8List responseList = await streamedResponse.stream.toBytes();
     final String responseData = String.fromCharCodes(responseList);
 
-    // print('statusCode: $statusCode');
-    // print('responseData: $responseData');
-
-
     if (statusCode == 201) {
       return UploadResponse.fromJson(json.decode(responseData));
     } else {
       throw Exception('failed to upload story');
     }
-
-    // print('response: ${response}');
   }
 
   Future<dynamic> fetchStory() async {
@@ -110,15 +106,21 @@ class APIService {
     }
   }
 
-  Future<dynamic> detailStory(int id) async {
+  Future<dynamic> detailStory(String id) async {
+    final userStorage = UserStorage();
+    final token = await userStorage.token;
     final response = await http.get(
       Uri.parse('$baseURL/stories/$id'), 
       headers: {
         'Content-Type': 'application/json',
-        HttpHeaders.authorizationHeader: accessToken
+        HttpHeaders.authorizationHeader: 'Bearer $token'
       },
     );
 
-    print('response: ${response}');
+    if (response.statusCode == 200) {
+      return StoryResult.fromMap(json.decode(response.body));
+    } else {
+      throw Exception('failed to fetch story');
+    }
   }
 }

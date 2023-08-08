@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:submission_5_story_app/data/models/story.dart';
 
 class StoryCard extends StatelessWidget {
@@ -13,13 +14,16 @@ class StoryCard extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Image.network(story.photoUrl),
+        // GestureDetector(
+        //   onTap: () => context.push('/story/${story.id}'),
+        //   child: Image.network(story.photoUrl),
+        // ),
         Wrap(
           children: [
             Expanded(
               flex: 1,
               child: GestureDetector(
-                onTap: () {},
+                onTap: () => context.push('/story/${story.id}'),
                 child: const Icon(Icons.favorite_outline),
               ),
             ),

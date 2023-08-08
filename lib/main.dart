@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:submission_5_story_app/data/storages/user_storage.dart';
 import 'package:submission_5_story_app/providers/auth_provider.dart';
 import 'package:submission_5_story_app/providers/story_provider.dart';
+import 'package:submission_5_story_app/screens/detail_story.dart';
 import 'package:submission_5_story_app/screens/home_screen.dart';
 import 'package:submission_5_story_app/screens/login_screen.dart';
 import 'package:submission_5_story_app/screens/posting_screen.dart';
@@ -31,6 +32,12 @@ final GoRouter _router = GoRouter(
     GoRoute(
       path: '/posting',
       builder: (context, state) => const PostingScreen(),
+    ),
+    GoRoute(
+      path: '/story/:id',
+      builder: (context, state) => DetailStoryScreen(
+        id: state.pathParameters['id'] ?? '',
+      ),
     ),
   ],
 );

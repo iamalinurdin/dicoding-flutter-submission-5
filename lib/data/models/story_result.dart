@@ -8,7 +8,7 @@ class StoryResult {
   StoryResult({
     required this.error,
     required this.message,
-    required this.results
+    required this.results,
   });
 
   factory StoryResult.fromJson(Map<String, dynamic> json) {
@@ -18,4 +18,12 @@ class StoryResult {
       results: List.from((json['listStory'] as List).map((item) => Story.fromJson(item)))
     );
   }
+
+  factory StoryResult.fromMap(Map<String, dynamic> json) {
+    return StoryResult(
+      error: json['error'], 
+      message: json['message'], 
+      results: Story.fromJson(json['story'])
+    );
+  } 
 }

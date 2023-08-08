@@ -4,13 +4,12 @@ import 'package:submission_5_story_app/data/api_service.dart';
 
 class StoryProvider with ChangeNotifier {
   final APIService _apiService = APIService();
-  List _result = [];
+  dynamic _result;
   late ProviderState _state;
   late String _message = '';
 
   StoryProvider() {
     _state = ProviderState.none;
-    fetchStory();
   }
 
   String get message => _message;
@@ -21,7 +20,7 @@ class StoryProvider with ChangeNotifier {
     try {
       _state = ProviderState.loading;
       notifyListeners();
-      
+
       final response = await _apiService.fetchStory();
 
       if (response.results.isEmpty) {
@@ -50,9 +49,6 @@ class StoryProvider with ChangeNotifier {
 
       final response = await _apiService.addStory(bytes, filename, description);
 
-      print('response: ${response.error}');
-      print('response: ${response.message}');
-
       if (response.error) {
         _state = ProviderState.failed;
         notifyListeners();
@@ -66,6 +62,34 @@ class StoryProvider with ChangeNotifier {
       }
 
 
+    } catch (e) {
+      _state = ProviderState.failed;
+      notifyListeners();
+
+      return _message = 'failed to upload story';
+    }
+  }
+
+  Future<dynamic> fetchDetail(String id) async {
+    try {
+      _state = ProviderState.loading;
+      notifyListeners();
+
+      final response = await _apiService.detailStory(id);
+
+      print(response.results.photoUrl);
+
+      if (response.error) {
+        _state = ProviderState.failed;
+        notifyListeners();
+
+        return _message = 'failed to upload story';
+      } else {
+        _state = ProviderState.success;
+        notifyListeners();
+
+        return _result = response.results;
+      }
     } catch (e) {
       _state = ProviderState.failed;
       notifyListeners();
