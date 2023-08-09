@@ -32,20 +32,27 @@ class _HomeScreenState extends State<HomeScreen> {
         create: (context) => StoryProvider()..fetchStory(),
         child: Consumer<StoryProvider>(
           builder: (context, provider, child) {
-
             if (provider.state == ProviderState.loading) {
-              return CircularProgressIndicator();
-
+              return const Center(
+                child: CircularProgressIndicator()
+              );
             } else if (provider.state == ProviderState.success) {
               return ListView.builder(
                 itemCount: provider.result.length,
                 itemBuilder: (context, index) {
                   // return Text('index');
-                  return StoryCard(story: provider.result[index]);
+                  return Container(
+                    margin: const EdgeInsets.only(bottom: 50),
+                    child: StoryCard(
+                      story: provider.result[index]
+                    )
+                  );
                 },
               );
             } else {
-              return Text('error');
+              return const Center(
+                child: Text('Ooops, something went error')
+              );
             }
 
           },

@@ -12,46 +12,81 @@ class StoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // GestureDetector(
-        //   onTap: () => context.push('/story/${story.id}'),
-        //   child: Image.network(story.photoUrl),
-        // ),
-        Wrap(
-          children: [
-            Expanded(
-              flex: 1,
-              child: GestureDetector(
-                onTap: () => context.push('/story/${story.id}'),
-                child: const Icon(Icons.favorite_outline),
-              ),
-            ),
-            GestureDetector(
-              onTap: () {},
-              child: const Icon(Icons.comment_outlined),
-            ),
-            GestureDetector(
-              onTap: () {},
-              child: const Icon(Icons.share),
-            ),
-            Expanded(
-              flex: 2,
-              child: GestureDetector(
-                onTap: () {},
-                child: const Icon(Icons.bookmark_outline),
-              ),
-            )
-          ],
-        ),
-        Text(
-          story.name,
-          style: const TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 14
+        GestureDetector(
+          onTap: () => context.push('/story/${story.id}'),
+          child:  FadeInImage.assetNetwork(
+            placeholder: 'assets/loading.gif',
+            image: story.photoUrl
           ),
         ),
-        Text(story.description)
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Row(
+                    children: [
+                      GestureDetector(
+                        child: const Icon(Icons.favorite_border_outlined),
+                        onTap: () {
+
+                        },
+                      ),
+                      const SizedBox(width: 5),
+                      GestureDetector(
+                        child: const Icon(Icons.mode_comment_outlined),
+                        onTap: () {
+
+                        },
+                      ),
+                      const SizedBox(width: 5),
+                      GestureDetector(
+                        child: const Icon(Icons.share),
+                        onTap: () {
+
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              const Row(
+                children: [
+                  Text(
+                    '100', 
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold
+                    )
+                  ),
+                  SizedBox(width: 5),
+                  Text('likes')
+                ],
+              ),
+              const SizedBox(height: 10),
+              Row(
+                children: [
+                  CircleAvatar(
+                    backgroundColor: Colors.grey[300],
+                    child: const Icon(Icons.account_circle_outlined),
+                  ),
+                  const SizedBox(width: 10),
+                  Text(
+                    story.name,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              Text(story.description),
+            ],
+          ),
+        ),
       ],
     );
 

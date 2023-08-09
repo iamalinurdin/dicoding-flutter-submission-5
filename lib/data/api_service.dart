@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:submission_5_story_app/data/models/story.dart';
 import 'package:submission_5_story_app/data/models/story_result.dart';
 import 'package:submission_5_story_app/data/models/upload_response.dart';
 import 'package:submission_5_story_app/data/storages/user_storage.dart';
@@ -11,17 +10,6 @@ import 'package:http/http.dart' as http;
 class APIService {
   late String accessToken = '';
   final String baseURL = 'https://story-api.dicoding.dev/v1';
-
-  APIService() {
-    init();
-  }
-
-  init() async {
-
-
-    // print(token);
-    // accessToken = token;
-  }
 
   Future<dynamic> login(dynamic payload) async {
     final response = await http.post(

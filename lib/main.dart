@@ -27,7 +27,7 @@ final GoRouter _router = GoRouter(
     ),
     GoRoute(
       path: '/',
-      builder: (context, state) => const HomeScreen(title: 'Title'),
+      builder: (context, state) => const HomeScreen(title: 'Dicodingram'),
     ),
     GoRoute(
       path: '/posting',

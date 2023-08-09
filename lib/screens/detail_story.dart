@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:submission_5_story_app/config/state.dart';
@@ -20,7 +19,7 @@ class DetailStoryScreen extends StatelessWidget {
                 return const Center(
                   child: CircularProgressIndicator()
                 );
-              } else {
+              } else if (provider.state == ProviderState.success) {
                 return Column(
                   children: [
                     FadeInImage.assetNetwork(
@@ -74,7 +73,7 @@ class DetailStoryScreen extends StatelessWidget {
                             children: [
                               CircleAvatar(
                                 backgroundColor: Colors.grey[300],
-                                child: const Icon(Icons.account_circle_sharp),
+                                child: const Icon(Icons.account_circle_outlined),
                               ),
                               const SizedBox(width: 10),
                               Text(
@@ -93,6 +92,10 @@ class DetailStoryScreen extends StatelessWidget {
                       ),
                     )
                   ],
+                );
+              } else {
+                return const Center(
+                  child: Text('Ooops, something went error')
                 );
               }
             },
