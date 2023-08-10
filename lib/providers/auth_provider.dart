@@ -74,4 +74,15 @@ class AuthProvider with ChangeNotifier {
       return _message = 'Error: $e';
     }
   }
+
+  dynamic logout() async {
+    userStorage.setUserKey({});
+    userStorage.setTokenKey('');
+    userStorage.setIsLoggedIn(false);
+
+    _state = ProviderState.success;
+    notifyListeners();
+
+    return _message = 'success to register';
+  }
 }
